@@ -52,6 +52,7 @@
     li span { flex: 1; overflow-wrap: anywhere; }
     li.done span { color: #778091; text-decoration: line-through; }
     .delete { background: #fce8e8; color: #9b2525; }
+    #stats { color: #606b7b; font-size: 14px; margin: 0 0 12px; }
     #empty { color: #778091; padding: 12px 0; }
     @media (max-width: 420px) {
       main { padding: 18px; }
@@ -69,6 +70,7 @@
       <button class="add" type="submit">Добавить</button>
     </form>
 
+    <p id="stats" aria-live="polite">Всего задач: 0 · Выполнено: 0 · В работе: 0</p>
     <p id="empty">Пока задач нет. Добавь первую!</p>
     <ul id="task-list"></ul>
   </main>
@@ -79,6 +81,7 @@
     const input = document.querySelector("#task-input");
     const list = document.querySelector("#task-list");
     const emptyMessage = document.querySelector("#empty");
+    const stats = document.querySelector("#stats");
 
     // localStorage хранит список в браузере даже после перезагрузки страницы.
     let tasks = [];
@@ -128,6 +131,9 @@
         list.append(item);
       });
 
+      const completed = tasks.filter((task) => task.done).length;
+      const inProgress = tasks.length - completed;
+      stats.textContent = `Всего задач: ${tasks.length} · Выполнено: ${completed} · В работе: ${inProgress}`;
       emptyMessage.hidden = tasks.length > 0;
     }
 
